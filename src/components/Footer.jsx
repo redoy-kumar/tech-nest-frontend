@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
     return (
         <div>
-            Footer Content
+            <h1>Footer Content</h1>
         </div>
     );
 };
