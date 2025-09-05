@@ -8,8 +8,9 @@ const Header = () => {
         <header className='h-16 shadow-md'>
             <div className='mx-auto container h-full flex items-center justify-between px-8'>
                 {/* Logo */}
-                <div className='cursor-pointer'>
-                    <img width={175} height={60} src="src/assets/logo.png" alt="Logo" />
+                <div className='cursor-pointer flex items-center gap-1'>
+                    <img width={40} height={25} className='object-contain rounded-full' src="src/assets/only-logo.png" alt="Logo" />
+                    <span className='text-2xl lg:text-3xl font-semibold'>TechNest.</span>
                 </div>
 
                 {/* Search Bar */}
