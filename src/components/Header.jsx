@@ -2,6 +2,7 @@ import React from 'react';
 import { LuSearch } from "react-icons/lu";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
@@ -39,7 +40,9 @@ const Header = () => {
                     {/* login and logout button */}
                     <div>
                         <button className='px-3 bg-orange-500 text-white rounded-full py-1 hover:bg-orange-700'>
-                            Login
+                            <Link to={`/login`}>
+                                Login
+                            </Link>
                         </button>
                     </div>
                 </div>
