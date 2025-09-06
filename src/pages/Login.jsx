@@ -30,7 +30,7 @@ const Login = () => {
         e.preventDefault();
     }
 
-    console.log("data login: ", data);
+    // console.log("data login: ", data);
 
     return (
         <section id='login'>
@@ -45,13 +45,13 @@ const Login = () => {
                         <div>
                             <label>Email</label>
                             <div className='mb-4 bg-slate-100'>
-                                <input type="email" onChange={handleOnChange} name='email' value={data.email} placeholder="Enter Your Email" className="border outline-none p-2 w-full rounded" />
+                                <input required type="email" onChange={handleOnChange} name='email' value={data.email} placeholder="Enter Your Email" className="border outline-none p-2 w-full rounded" />
                             </div>
                         </div>
                         <div>
                             <label>Password</label>
                             <div className='mb-4 bg-slate-100 flex items-center border p-2 rounded'>
-                                <input type={showPassword ? "text" : "password"} name='password' value={data.password} onChange={handleOnChange} id="password" placeholder="Enter Your Password" className="outline-none w-full bg-transparent" />
+                                <input required type={showPassword ? "text" : "password"} name='password' value={data.password} onChange={handleOnChange} id="password" placeholder="Enter Your Password" className="outline-none w-full bg-transparent" />
                                 <div className='cursor-pointer' onClick={togglePasswordVisibility}>
                                     <span>
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
