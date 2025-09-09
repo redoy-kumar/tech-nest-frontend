@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import loginIcons from '../assets/signin.gif';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import imageToBase64 from '../helpers/imageToBase64';
+import summaryApi from '../common/common';
+import { toast } from 'react-toastify';
+
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -17,12 +20,14 @@ const SignUp = () => {
         profilePic: ""
     });
 
-    const handleUploadPic = async(e) =>{
+    const navigate = useNavigate()
+
+    const handleUploadPic = async (e) => {
         const file = e.target.files[0];
         const image = await imageToBase64(file);
 
-        setData((preve)=>{
-            return{
+        setData((preve) => {
+            return {
                 ...preve,
                 profilePic: image
             }
@@ -40,9 +45,33 @@ const SignUp = () => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (data.password !== data.confirmPassword) {
+            alert("Password and Confirm Password do not match");
+            return;
+        }
+
+        const dataResponse = await fetch(summaryApi.signUp.url, {
+            method: summaryApi.signUp.method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const dataApi = await dataResponse.json();
+        if(dataApi.success){
+            toast.success(dataApi.message);
+            navigate('/login');
+        }else{
+            toast.error(dataApi.message);
+        }
+
+        // console.log("data:", dataApi);
     }
+
     return (
         <section id='signup'>
             <div className='mx-auto container p-7'>
