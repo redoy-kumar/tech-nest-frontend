@@ -5,6 +5,11 @@ const summaryApi = {
     url: `${backendDomain}/api/signup`,
     method: "POST",
     description: "User sign up",
+   },
+   signIn:{
+      url: `${backendDomain}/api/signin`,
+      method: "POST",
+      description: "User sign in",
    }
 };
 
