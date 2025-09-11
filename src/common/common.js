@@ -10,6 +10,11 @@ const summaryApi = {
       url: `${backendDomain}/api/signin`,
       method: "POST",
       description: "User sign in",
+   },
+   currentUser:{
+      url: `${backendDomain}/api/user-details`,
+      method: "GET",
+      description: "Fetch user details",
    }
 };
 
