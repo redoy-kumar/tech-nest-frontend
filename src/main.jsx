@@ -10,6 +10,9 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import SignUp from './pages/SignUp.jsx';
+import { Provider } from 'react-redux'
+import { store } from './store/store.js';
+
 
 
 const router = createBrowserRouter([
@@ -27,11 +30,11 @@ const router = createBrowserRouter([
       },
       {
         path: "forgot-password",
-        element: <ForgotPassword/>
+        element: <ForgotPassword />
       },
       {
         path: "sign-up",
-        element: <SignUp/>
+        element: <SignUp />
       }
     ],
   },
@@ -39,6 +42,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 );
