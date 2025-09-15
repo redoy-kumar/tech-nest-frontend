@@ -12,6 +12,9 @@ import ForgotPassword from './pages/ForgotPassword.jsx';
 import SignUp from './pages/SignUp.jsx';
 import { Provider } from 'react-redux'
 import { store } from './store/store.js';
+import AdminPanel from './pages/AdminPanel.jsx';
+import AllUsers from './pages/AllUsers.jsx';
+import AllProducts from './pages/AllProducts.jsx';
 
 
 
@@ -35,7 +38,21 @@ const router = createBrowserRouter([
       {
         path: "sign-up",
         element: <SignUp />
-      }
+      },
+      {
+        path: "admin-panel",
+        element: <AdminPanel />,
+        children: [
+          {
+            path: "all-users",
+            element: <AllUsers />
+          },
+          {
+            path: "all-products",
+            element: <AllProducts/>
+          }
+        ]
+      },
     ],
   },
 ]);
