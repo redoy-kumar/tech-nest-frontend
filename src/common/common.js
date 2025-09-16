@@ -20,6 +20,16 @@ const summaryApi = {
       url: `${backendDomain}/api/user-logout`,
       method: "GET",
       description: "User logout",
+   },
+   allUser:{
+      url: `${backendDomain}/api/allUsers`,
+      method: "GET",
+      description: "Users details",
+   },
+   updateUser:{
+      url: `${backendDomain}/api/update-user`,
+      method: "POST",
+      description: "Update user details",
    }
 };
 

@@ -32,7 +32,6 @@ function App() {
       if(dataApi.success){
         dispatch(setUserDetails(dataApi.data))
       }
-      console.log("Current User Data:", dataApi);
     } catch (error) {
       console.error('Error fetching user details:', error);
     }
