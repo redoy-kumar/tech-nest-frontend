@@ -98,7 +98,7 @@ const Header = () => {
                             <div className='absolute bg-white bottom-0 top-11 h-fit p-2 shadow-lg rounded hidden md:block'>
                                 <nav className='flex flex-col'>
                                     <Link
-                                        to={"admin-panel"}
+                                        to={"/admin-panel/all-products"}
                                         className='whitespace-nowrap hover:bg-slate-100 p-2'
                                         onClick={() => setMenuDisplay(false)}
                                     >
