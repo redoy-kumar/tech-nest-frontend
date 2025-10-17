@@ -1,35 +1,40 @@
 const backendDomain = "http://localhost:8080";
 
 const summaryApi = {
-   signUp:{
-    url: `${backendDomain}/api/signup`,
-    method: "POST",
-    description: "User sign up",
+   signUp: {
+      url: `${backendDomain}/api/signup`,
+      method: "POST",
+      description: "User sign up",
    },
-   signIn:{
+   signIn: {
       url: `${backendDomain}/api/signin`,
       method: "POST",
       description: "User sign in",
    },
-   currentUser:{
+   currentUser: {
       url: `${backendDomain}/api/user-details`,
       method: "GET",
       description: "Fetch user details",
    },
-   logoutUser:{
+   logoutUser: {
       url: `${backendDomain}/api/user-logout`,
       method: "GET",
       description: "User logout",
    },
-   allUser:{
+   allUser: {
       url: `${backendDomain}/api/allUsers`,
       method: "GET",
       description: "Users details",
    },
-   updateUser:{
+   updateUser: {
       url: `${backendDomain}/api/update-user`,
       method: "POST",
       description: "Update user details",
+   },
+   uploadProduct: {
+      url: `${backendDomain}/api/upload-product`,
+      method: "POST",
+      description: "Upload product details",
    }
 };
 

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import productCategory from "../helpers/productCategory";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaCloudUploadAlt, FaSpinner } from "react-icons/fa";
 import uploadImage from "../helpers/uploadImage";
 import { toast } from "react-toastify";
 import DisplayProductImage from "./DiaplayProductImage";
+import { MdDelete } from "react-icons/md";
+import summaryApi from "../common/common";
 
 const UploadProduct = ({ onClose }) => {
   const [data, setData] = useState({
@@ -14,18 +16,18 @@ const UploadProduct = ({ onClose }) => {
     productImage: [],
     description: "",
     price: "",
-    selling: "",
+    sellingPrice: "",
   });
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [fullScreenImage,setFullScreenImage] = useState("")
-  const [openFullScreen,setOpenFullScreen] = useState(false)
+  const [fullScreenImage, setFullScreenImage] = useState("");
+  const [openFullScreen, setOpenFullScreen] = useState(false);
 
   const handleOnChange = (e) => {
-    const { id, value } = e.target;
-    setData((prev) => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileSelect = (e) => {
@@ -37,10 +39,30 @@ const UploadProduct = ({ onClose }) => {
     setPreviewImages((prev) => [...prev, ...localPreviews]);
   };
 
+  // Delete selected image
+  const handleDeleteProductImage = (index) => {
+    const newPreviewImages = [...previewImages];
+    newPreviewImages.splice(index, 1);
+
+    const newSelectedFiles = [...selectedFiles];
+    newSelectedFiles.splice(index, 1);
+
+    setPreviewImages(newPreviewImages);
+    setSelectedFiles(newSelectedFiles);
+  };
+
+  // Handle upload
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!data.productName || !data.brandName || !data.category) {
+    if (
+      !data.productName ||
+      !data.brandName ||
+      !data.category ||
+      !data.price ||
+      !data.sellingPrice ||
+      !data.description
+    ) {
       toast.error("Please fill all required fields!");
       return;
     }
@@ -52,6 +74,25 @@ const UploadProduct = ({ onClose }) => {
 
     try {
       setLoading(true);
+      const response = await fetch(summaryApi.uploadProduct.url,{
+        method: summaryApi.uploadProduct.method,
+        credentials: 'include',
+        headers: {
+          "content-type" : "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+
+      const responseData = await response.json()
+
+      if(response.success){
+        toast.success(responseData?.message)
+        onClose()
+      }
+
+       if(response.error){
+        toast.success(responseData?.message)
+      }
 
       const uploadPromises = selectedFiles.map((file) => uploadImage(file));
       const uploadedResults = await Promise.all(uploadPromises);
@@ -70,7 +111,7 @@ const UploadProduct = ({ onClose }) => {
       console.log("Final Product Data:", finalData);
       toast.success("Product uploaded successfully!");
 
-      // reset form
+      // Reset all states
       setData({
         productName: "",
         brandName: "",
@@ -78,7 +119,7 @@ const UploadProduct = ({ onClose }) => {
         productImage: [],
         description: "",
         price: "",
-        selling: "",
+        sellingPrice: "",
       });
       setSelectedFiles([]);
       setPreviewImages([]);
@@ -113,7 +154,7 @@ const UploadProduct = ({ onClose }) => {
           </label>
           <input
             type="text"
-            id="productName"
+            name="productName"
             placeholder="Enter product name"
             value={data.productName}
             onChange={handleOnChange}
@@ -126,7 +167,7 @@ const UploadProduct = ({ onClose }) => {
           </label>
           <input
             type="text"
-            id="brandName"
+            name="brandName"
             placeholder="Enter brand name"
             value={data.brandName}
             onChange={handleOnChange}
@@ -138,7 +179,7 @@ const UploadProduct = ({ onClose }) => {
             Category:
           </label>
           <select
-            id="category"
+            name="category"
             value={data.category}
             onChange={handleOnChange}
             className="p-2 rounded bg-slate-100 border"
@@ -180,43 +221,95 @@ const UploadProduct = ({ onClose }) => {
           {previewImages.length > 0 ? (
             <div className="grid grid-cols-3 gap-2 mt-2">
               {previewImages.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={`preview-${idx}`}
-                  width={80}
-                  height={80}
-                  className="bg-slate-100 border rounded h-24 w-full object-cover cursor-pointer"
-                  onClick={()=>{
-                    setOpenFullScreen(true)
-                    setFullScreenImage(img)
-                  }}
-                />
+                <div className="relative group" key={idx}>
+                  <img
+                    src={img}
+                    alt={`preview-${idx}`}
+                    width={80}
+                    height={80}
+                    className="bg-slate-100 border rounded h-24 w-full object-cover cursor-pointer"
+                    onClick={() => {
+                      setOpenFullScreen(true);
+                      setFullScreenImage(img);
+                    }}
+                  />
+                  <div
+                    className="absolute hidden group-hover:block bottom-0 right-0 p-1 cursor-pointer bg-red-500 text-white rounded-full"
+                    onClick={() => handleDeleteProductImage(idx)}
+                  >
+                    <MdDelete />
+                  </div>
+                </div>
               ))}
             </div>
           ) : (
             <p className="text-sm text-red-500">*please select product image</p>
           )}
 
-          {/* Submit Button */}
+          {/* Product Price */}
+          <label htmlFor="price" className="font-medium">
+            Price:
+          </label>
+          <input
+            type="number"
+            name="price"
+            placeholder="Enter price"
+            value={data.price}
+            onChange={handleOnChange}
+            className="p-2 rounded bg-slate-100 border"
+          />
+
+          {/* Selling Price */}
+          <label htmlFor="sellingPrice" className="font-medium">
+            Selling Price:
+          </label>
+          <input
+            type="number"
+            name="sellingPrice"
+            placeholder="Enter price"
+            value={data.sellingPrice}
+            onChange={handleOnChange}
+            className="p-2 rounded bg-slate-100 border"
+          />
+
+          {/* Product Description */}
+          <label htmlFor="description" className="font-medium">
+            Description:
+          </label>
+          <textarea
+            name="description"
+            rows={3}
+            value={data.description}
+            onChange={handleOnChange}
+            className="h-28 bg-slate-100 border resize-none p-1"
+            placeholder="Enter product description"
+          ></textarea>
+
+          {/* Submit Button with Spinner */}
           <button
             type="submit"
-            className="px-3 py-3 bg-orange-500 text-white rounded-md cursor-pointer hover:bg-orange-600 disabled:opacity-50 mt-4"
+            className="px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-md hover:from-orange-600 hover:to-orange-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-4"
             disabled={loading}
           >
-            {loading ? "Uploading..." : "Upload Product"}
+            {loading ? (
+              <>
+                <FaSpinner className="animate-spin text-white text-lg" />
+                Uploading...
+              </>
+            ) : (
+              "Upload Product"
+            )}
           </button>
         </form>
       </div>
 
-
-      {/* Display Image Full  Screen*/}
-      {
-        openFullScreen && (
-          <DisplayProductImage onClose={()=>setOpenFullScreen(false)} imgUrl={fullScreenImage} />
-        )
-      }
-      
+      {/* Full-Screen Image */}
+      {openFullScreen && (
+        <DisplayProductImage
+          onClose={() => setOpenFullScreen(false)}
+          imgUrl={fullScreenImage}
+        />
+      )}
     </div>
   );
 };
