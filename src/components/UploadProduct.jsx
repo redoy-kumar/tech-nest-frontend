@@ -39,7 +39,6 @@ const UploadProduct = ({ onClose }) => {
     setPreviewImages((prev) => [...prev, ...localPreviews]);
   };
 
-  // Delete selected image
   const handleDeleteProductImage = (index) => {
     const newPreviewImages = [...previewImages];
     newPreviewImages.splice(index, 1);
@@ -51,18 +50,11 @@ const UploadProduct = ({ onClose }) => {
     setSelectedFiles(newSelectedFiles);
   };
 
-  // Handle upload
+  // handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !data.productName ||
-      !data.brandName ||
-      !data.category ||
-      !data.price ||
-      !data.sellingPrice ||
-      !data.description
-    ) {
+    if (!data.productName || !data.brandName || !data.category || !data.price || !data.sellingPrice || !data.description) {
       toast.error("Please fill all required fields!");
       return;
     }
@@ -74,32 +66,10 @@ const UploadProduct = ({ onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch(summaryApi.uploadProduct.url,{
-        method: summaryApi.uploadProduct.method,
-        credentials: 'include',
-        headers: {
-          "content-type" : "application/json"
-        },
-        body: JSON.stringify(data)
-      })
 
-      const responseData = await response.json()
-
-      if(response.success){
-        toast.success(responseData?.message)
-        onClose()
-      }
-
-       if(response.error){
-        toast.success(responseData?.message)
-      }
-
-      const uploadPromises = selectedFiles.map((file) => uploadImage(file));
-      const uploadedResults = await Promise.all(uploadPromises);
-
-      const cloudinaryUrls = uploadedResults
-        .filter((res) => res?.secure_url)
-        .map((res) => res.secure_url);
+      // 1️⃣ Upload images to Cloudinary
+      const uploadedResults = await Promise.all(selectedFiles.map(file => uploadImage(file)));
+      const cloudinaryUrls = uploadedResults.map(r => r.secure_url).filter(Boolean);
 
       if (cloudinaryUrls.length === 0) {
         toast.error("Image upload failed!");
@@ -107,30 +77,38 @@ const UploadProduct = ({ onClose }) => {
         return;
       }
 
+      // 2️⃣ Prepare final product data
       const finalData = { ...data, productImage: cloudinaryUrls };
-      console.log("Final Product Data:", finalData);
-      toast.success("Product uploaded successfully!");
 
-      // Reset all states
-      setData({
-        productName: "",
-        brandName: "",
-        category: "",
-        productImage: [],
-        description: "",
-        price: "",
-        sellingPrice: "",
+      // 3️⃣ Send product to backend
+      const res = await fetch(summaryApi.uploadProduct.url, {
+        method: summaryApi.uploadProduct.method,
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalData),
       });
-      setSelectedFiles([]);
-      setPreviewImages([]);
-      setLoading(false);
-      onClose();
-    } catch (error) {
-      console.error(error);
+
+      const responseData = await res.json();
+
+      if (res.ok && responseData.success) {
+        toast.success(responseData.message);
+        // Reset states
+        setData({ productName: "", brandName: "", category: "", productImage: [], description: "", price: "", sellingPrice: "" });
+        setSelectedFiles([]);
+        setPreviewImages([]);
+        onClose();
+      } else {
+        toast.error(responseData.message || "Upload failed!");
+      }
+
+    } catch (err) {
+      console.error(err);
       toast.error("Something went wrong!");
+    } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="fixed inset-0 bg-slate-200/40 flex justify-center items-center z-50">
@@ -149,9 +127,7 @@ const UploadProduct = ({ onClose }) => {
         {/* Form */}
         <form className="grid gap-3 p-4" onSubmit={handleSubmit}>
           {/* Product Name */}
-          <label htmlFor="productName" className="font-medium">
-            Product Name:
-          </label>
+          <label className="font-medium">Product Name:</label>
           <input
             type="text"
             name="productName"
@@ -162,9 +138,7 @@ const UploadProduct = ({ onClose }) => {
           />
 
           {/* Brand Name */}
-          <label htmlFor="brandName" className="font-medium">
-            Brand Name:
-          </label>
+          <label className="font-medium">Brand Name:</label>
           <input
             type="text"
             name="brandName"
@@ -175,9 +149,7 @@ const UploadProduct = ({ onClose }) => {
           />
 
           {/* Category */}
-          <label htmlFor="category" className="font-medium">
-            Category:
-          </label>
+          <label className="font-medium">Category:</label>
           <select
             name="category"
             value={data.category}
@@ -247,9 +219,7 @@ const UploadProduct = ({ onClose }) => {
           )}
 
           {/* Product Price */}
-          <label htmlFor="price" className="font-medium">
-            Price:
-          </label>
+          <label className="font-medium">Price:</label>
           <input
             type="number"
             name="price"
@@ -260,9 +230,7 @@ const UploadProduct = ({ onClose }) => {
           />
 
           {/* Selling Price */}
-          <label htmlFor="sellingPrice" className="font-medium">
-            Selling Price:
-          </label>
+          <label className="font-medium">Selling Price:</label>
           <input
             type="number"
             name="sellingPrice"
@@ -273,9 +241,7 @@ const UploadProduct = ({ onClose }) => {
           />
 
           {/* Product Description */}
-          <label htmlFor="description" className="font-medium">
-            Description:
-          </label>
+          <label className="font-medium">Description:</label>
           <textarea
             name="description"
             rows={3}
@@ -285,7 +251,7 @@ const UploadProduct = ({ onClose }) => {
             placeholder="Enter product description"
           ></textarea>
 
-          {/* Submit Button with Spinner */}
+          {/* Submit Button */}
           <button
             type="submit"
             className="px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-md hover:from-orange-600 hover:to-orange-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-4"
@@ -314,4 +280,5 @@ const UploadProduct = ({ onClose }) => {
   );
 };
 
-export default UploadProduct;
+
+export default UploadProduct
