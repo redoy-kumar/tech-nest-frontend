@@ -34,7 +34,7 @@ const AllProducts = () => {
       {/* All products */}
       <div className="flex flex-wrap gap-5 py-4">
         {allProduct.map((product, index) => (
-          <AdminProductCart data={product} key={index} />
+          <AdminProductCart data={product} key={index} fetchData={fetchAllProduct} />
         ))}
       </div>
 
