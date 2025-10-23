@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
+import ReactDOM from "react-dom";
 import AdminEditProduct from "./AdminEditProduct";
-import displayBDCurrency from "../helpers/diaplayCurrency.js"; // fixed typo
+import displayBDCurrency from "../helpers/diaplayCurrency"; 
 
 const AdminProductCart = ({ data, fetchData }) => {
   const [editProduct, setEditProduct] = useState(false);
@@ -40,14 +41,16 @@ const AdminProductCart = ({ data, fetchData }) => {
         <MdOutlineEdit size={18} />
       </button>
 
-      {/* Edit Modal */}
-      {editProduct && (
-        <AdminEditProduct
-          productData={data}
-          onClose={() => setEditProduct(false)}
-          fetchData={fetchData}
-        />
-      )}
+      {/* Render the modal as a portal (so it's not trapped inside the card) */}
+      {editProduct &&
+        ReactDOM.createPortal(
+          <AdminEditProduct
+            productData={data}
+            onClose={() => setEditProduct(false)}
+            fetchData={fetchData}
+          />,
+          document.body
+        )}
     </div>
   );
 };
