@@ -8,7 +8,7 @@ import DisplayProductImage from "./DiaplayProductImage";
 import { MdDelete } from "react-icons/md";
 import summaryApi from "../common/common";
 
-const UploadProduct = ({ onClose }) => {
+const UploadProduct = ({ onClose, fetchData }) => {
   const [data, setData] = useState({
     productName: "",
     brandName: "",
@@ -97,6 +97,7 @@ const UploadProduct = ({ onClose }) => {
         setSelectedFiles([]);
         setPreviewImages([]);
         onClose();
+        fetchData();
       } else {
         toast.error(responseData.message || "Upload failed!");
       }

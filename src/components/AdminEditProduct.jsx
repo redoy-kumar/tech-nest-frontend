@@ -122,7 +122,7 @@ const AdminEditProduct = ({ onClose, productData, fetchData }) => {
     }
   };
 
-  return (
+  return ( 
     <div className="fixed inset-0 bg-slate-200/40 flex justify-center items-center z-50">
       <div className="bg-white shadow-lg rounded w-full max-w-2xl max-h-[90%] overflow-y-auto">
         {/* Header */}

@@ -18,7 +18,7 @@ const AllProducts = () => {
   }, []);
 
   return (
-    <div>
+    <div className="h-full">
       <div className="bg-white py-2 px-4 flex justify-between items-center">
         <h2 className="font-bold text-lg">All Products</h2>
         <button
@@ -31,16 +31,23 @@ const AllProducts = () => {
         </button>
       </div>
 
-      {/* All products */}
-      <div className="flex flex-wrap gap-5 py-4">
+      {/* Scrollable product section */}
+      <div className="flex flex-wrap gap-5 py-4 h-[calc(100vh-190px)] overflow-y-auto">
         {allProduct.map((product, index) => (
-          <AdminProductCart data={product} key={index} fetchData={fetchAllProduct} />
+          <AdminProductCart
+            data={product}
+            key={index}
+            fetchData={fetchAllProduct}
+          />
         ))}
       </div>
 
       {/* Upload Product section */}
       {openUploadProduct && (
-        <UploadProduct onClose={() => setOpenUploadProduct(false)} />
+        <UploadProduct
+          onClose={() => setOpenUploadProduct(false)}
+          fetchData={fetchAllProduct}
+        />
       )}
     </div>
   );
