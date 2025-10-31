@@ -6,11 +6,21 @@ import AdminProductCart from '../components/adminProductCart';
 const AllProducts = () => {
   const [openUploadProduct, setOpenUploadProduct] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
+  const [loading, setLoading] = useState(true);   //  loading state
 
   const fetchAllProduct = async () => {
-    const response = await fetch(summaryApi.allProduct.url);
-    const dataResponse = await response.json();
-    setAllProduct(dataResponse?.data || []);
+    try {
+      setLoading(true);   //  start loading
+
+      const response = await fetch(summaryApi.allProduct.url);
+      const dataResponse = await response.json();
+
+      setAllProduct(dataResponse?.data || []);
+    } catch (error) {
+      console.error("Error fetching products", error);
+    } finally {
+      setLoading(false);  // stop loading
+    }
   };
 
   useEffect(() => {
@@ -31,16 +41,22 @@ const AllProducts = () => {
         </button>
       </div>
 
-      {/* Scrollable product section */}
-      <div className="flex flex-wrap gap-5 py-4 h-[calc(100vh-190px)] overflow-y-auto">
-        {allProduct.map((product, index) => (
-          <AdminProductCart
-            data={product}
-            key={index}
-            fetchData={fetchAllProduct}
-          />
-        ))}
-      </div>
+      {/*  Loading Spinner */}
+      {loading ? (
+        <div className="flex justify-center items-center h-[calc(100vh-190px)]">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-black border-t-transparent"></div>
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-5 py-4 h-[calc(100vh-190px)] overflow-y-auto">
+          {allProduct.map((product, index) => (
+            <AdminProductCart
+              data={product}
+              key={index}
+              fetchData={fetchAllProduct}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Upload Product section */}
       {openUploadProduct && (

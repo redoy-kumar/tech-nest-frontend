@@ -1,7 +1,10 @@
-.customShadow {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    border-radius: 50%;
+.customShadow{
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+/* Scroll Hidden*/
+.scrollbar-none::-webkit-scrollbar{
+    display: none;
 }
 
 .customShadow:hover {
@@ -17,4 +20,3 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
-
