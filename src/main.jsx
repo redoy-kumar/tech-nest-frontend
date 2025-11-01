@@ -15,7 +15,7 @@ import { store } from './store/store.js';
 import AdminPanel from './pages/AdminPanel.jsx';
 import AllUsers from './pages/AllUsers.jsx';
 import AllProducts from './pages/AllProducts.jsx';
-
+import CategoryProduct from './pages/CategoryProduct.jsx'
 
 
 const router = createBrowserRouter([
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
         element: <SignUp />
       },
       {
+        path:"product-category/:categoryName",
+        element: <CategoryProduct/>
+      },
+      {
         path: "admin-panel",
         element: <AdminPanel />,
         children: [
@@ -49,7 +53,7 @@ const router = createBrowserRouter([
           },
           {
             path: "all-products",
-            element: <AllProducts/>
+            element: <AllProducts />
           }
         ]
       },
@@ -59,8 +63,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
   // </StrictMode>,
 );
