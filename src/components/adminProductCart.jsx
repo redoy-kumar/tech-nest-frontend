@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import ReactDOM from "react-dom";
 import AdminEditProduct from "./AdminEditProduct";
-import displayBDCurrency from "../helpers/diaplayCurrency";
+import displayBDCurrency from "../helpers/displayCurrency";
 
 const AdminProductCart = ({ data, fetchData }) => {
   const [editProduct, setEditProduct] = useState(false);

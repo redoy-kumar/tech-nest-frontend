@@ -1,5 +1,6 @@
 import BannerProduct from "../components/BannerProduct";
 import CategoryList from "../components/CategoryList";
+import HorizontalProductCart from "../components/HorizontalProductCart";
 
 const Home = () => {
    
@@ -7,6 +8,7 @@ const Home = () => {
         <div>
             <CategoryList/>
             <BannerProduct/>
+            <HorizontalProductCart category={"airpodes"} heading={"Top's Airpodes"} />
         </div>
     );
 };
