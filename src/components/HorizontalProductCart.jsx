@@ -22,7 +22,7 @@ const HorizontalProductCart = ({ category, heading }) => {
     }, []);
 
     // Scroll Left
-    const prevSlide = () => {
+    const nextSlide = () => {
         const el = scrollRef.current;
         if (!el) return;
 
@@ -34,7 +34,7 @@ const HorizontalProductCart = ({ category, heading }) => {
     };
 
     // Scroll Right
-    const nextSlide = () => {
+    const prevSlide = () => {
         const el = scrollRef.current;
         if (!el) return;
 
@@ -130,7 +130,7 @@ const HorizontalProductCart = ({ category, heading }) => {
                                     </div>
 
                                     <button
-                                        className="mt-2 text-xs md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full w-fit"
+                                        className="mt-2 cursor-pointer text-xs md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full w-fit"
                                         onClick={(e) => handleAddToCart(e, product?._id)}
                                     >
                                         Add to Cart
