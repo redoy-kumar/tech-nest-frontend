@@ -6,10 +6,11 @@ import image2 from "../assets/banner/banner 3.jpg";
 import image3 from "../assets/banner/banner 4.jpg";
 import image4 from "../assets/banner/banner 5.jpg";
 import image5 from "../assets/banner/banner 6.webp";
-import image6 from "../assets/banner/banner 7.webp";
+import image6 from "../assets/banner/banner 7.jpg";
+import image7 from "../assets/banner/banner 8.jpg";
 
 const BannerProduct = () => {
-  const images = [image1, image2, image3, image4, image5, image6];
+  const images = [image1, image2, image3, image4, image5, image6, image7];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef(null);

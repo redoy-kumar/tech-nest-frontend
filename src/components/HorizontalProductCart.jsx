@@ -45,12 +45,6 @@ const HorizontalProductCart = ({ category, heading }) => {
         }
     };
 
-    const handleAddToCart = (e, id) => {
-        e.stopPropagation();
-        console.log("Add to cart:", id);
-        // implement add-to-cart logic
-    };
-
     return (
         <div className="container mx-auto px-3 my-8">
             <h2 className="text-2xl font-semibold py-2">{heading}</h2>
@@ -129,9 +123,9 @@ const HorizontalProductCart = ({ category, heading }) => {
                                         </div>
                                     </div>
 
+                                    
                                     <button
-                                        className="mt-2 cursor-pointer text-xs md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full w-fit"
-                                        onClick={(e) => handleAddToCart(e, product?._id)}
+                                        className="mt-2 cursor-pointer text-xs md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full lg:w-fit md:w-fit"
                                     >
                                         Add to Cart
                                     </button>

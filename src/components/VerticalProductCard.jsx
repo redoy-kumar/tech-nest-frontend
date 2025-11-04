@@ -20,8 +20,8 @@ const VerticalProductCartCard = ({ category, heading }) => {
     fetchData();
   }, []);
 
-  // Scroll Left
-    const nextSlide= () => {
+ // Scroll Left
+    const nextSlide = () => {
         const el = scrollRef.current;
         if (!el) return;
 
@@ -94,10 +94,10 @@ const VerticalProductCartCard = ({ category, heading }) => {
                 "
               >
                 {/* Image */}
-                <div className="bg-transparent w-full h-40 sm:h-48 md:h-56 lg:h-72 p-2 flex items-center justify-center">
+                <div className="bg-slate-200 w-full h-40 sm:h-48 md:h-56 lg:h-72 p-2 flex items-center justify-center">
                   <img
                     src={product.productImage[0]}
-                    className="object-scale-down h-full hover:scale-105 transition-all p-2 bg-transparent"
+                    className="object-scale-down h-full hover:scale-105 transition-all p-2 mix-blend-multiply"
                     alt="product"
                   />
                 </div>
@@ -124,7 +124,7 @@ const VerticalProductCartCard = ({ category, heading }) => {
                   </div>
 
                   <button
-                    className="mt-2 cursor-pointer text-xs sm:text-sm md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full w-fit"
+                    className="mt-2 cursor-pointer text-xs sm:text-sm md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full "
                     onClick={(e) => handleAddToCart(e, product?._id)}
                   >
                     Add to Cart
