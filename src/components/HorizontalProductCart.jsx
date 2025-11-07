@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import fetchCategoryByProduct from '../helpers/fetchCategoryWiseProduct';
 import displayBDCurrency from '../helpers/displayCurrency';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import addToCart from '../helpers/addToCart';
 
 const HorizontalProductCart = ({ category, heading }) => {
 
@@ -84,7 +86,7 @@ const HorizontalProductCart = ({ category, heading }) => {
                         ))
                     ) : (
                         data.map((product, index) => (
-                            <div
+                            <Link to={"product/"+product?._id}
                                 key={index}
                                 className="
                                     min-w-[220px] max-w-[260px]
@@ -126,11 +128,12 @@ const HorizontalProductCart = ({ category, heading }) => {
                                     
                                     <button
                                         className="mt-2 cursor-pointer text-xs md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full lg:w-fit md:w-fit"
+                                        onClick={(e)=>addToCart(e,product?._id)}
                                     >
                                         Add to Cart
                                     </button>
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     )}
                 </div>

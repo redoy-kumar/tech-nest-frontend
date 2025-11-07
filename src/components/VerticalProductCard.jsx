@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import fetchCategoryByProduct from '../helpers/fetchCategoryWiseProduct';
 import displayBDCurrency from '../helpers/displayCurrency';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import addToCart from '../helpers/addToCart';
 
 const VerticalProductCartCard = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -44,10 +45,6 @@ const VerticalProductCartCard = ({ category, heading }) => {
         }
     };
 
-  const handleAddToCart = (e, id) => {
-    e.stopPropagation();
-    console.log("Add to cart:", id);
-  };
 
   return (
     <div className="container mx-auto px-3 my-8">
@@ -125,7 +122,7 @@ const VerticalProductCartCard = ({ category, heading }) => {
 
                   <button
                     className="mt-2 cursor-pointer text-xs sm:text-sm md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full "
-                    onClick={(e) => handleAddToCart(e, product?._id)}
+                    onClick={(e)=>addToCart(e,product?._id)}
                   >
                     Add to Cart
                   </button>

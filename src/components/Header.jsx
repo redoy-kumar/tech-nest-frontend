@@ -48,7 +48,7 @@ const Header = () => {
     };
 
     return (
-        <header className='h-16 shadow-md'>
+        <header className='h-16 shadow-md fixed bg-white w-full z-40'>
             <div className='mx-auto container h-full flex items-center justify-between px-8'>
                 {/* Logo */}
                 <div className='cursor-pointer flex items-center gap-1'>
