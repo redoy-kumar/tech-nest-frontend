@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom'
 import summaryApi from '../common/common'
 import { FaStar, FaStarHalf } from "react-icons/fa";
 import displayBDCurrency from '../helpers/displayCurrency';
-import VerticalProductCard from '../components/VerticalProductCart';
-import VerticalProductCart from '../components/VerticalProductCart';
+import CategoryWiseProductDisplay from '../components/CategoryWiseProductDisplay';
 
 const ProductDetails = () => {
 
@@ -183,7 +182,7 @@ const ProductDetails = () => {
 
       {/* Recommended product */}
       {data?.category && (
-        <VerticalProductCart
+        <CategoryWiseProductDisplay
           category={data.category}
           heading={"Recommended Product"}
         />

@@ -9,12 +9,16 @@ import { toast } from 'react-toastify';
 import { setUserDetails } from '../store/userSlice';
 import logo from '../assets/only-logo.PNG';
 import ROLE from '../common/role';
+import { useContext } from 'react';
+import Context from '../context/context';
 
 const Header = () => {
     const user = useSelector(state => state?.user?.user);
 
     const [menuDisplay, setMenuDisplay] = useState(false);
     const dispatch = useDispatch();
+
+    const contex = useContext(Context)
 
     const menuRef = useRef();
 
@@ -51,7 +55,7 @@ const Header = () => {
         <header className='h-16 shadow-md fixed bg-white w-full z-40'>
             <div className='mx-auto container h-full flex items-center justify-between px-8'>
                 {/* Logo */}
-                <div className='cursor-pointer flex items-center gap-1'>
+                <Link to={"/"} className='cursor-pointer flex items-center gap-1'>
                     <img
                         width={40}
                         height={25}
@@ -60,7 +64,7 @@ const Header = () => {
                         alt="Logo"
                     />
                     <span className='text-2xl lg:text-3xl font-semibold'>TechNest.</span>
-                </div>
+                </Link>
 
                 {/* Search Bar */}
                 <div className='hidden lg:flex items-center w-full justify-between max-w-sm'>
@@ -107,15 +111,19 @@ const Header = () => {
                                 </nav>
                             </div>
                         )}
-                    </div> {/* ✅ closed properly */}
+                    </div> {/* closed properly */}
 
                     {/* Shopping Cart */}
-                    <div className='text-2xl cursor-pointer relative'>
-                        <span><FaShoppingCart /></span>
-                        <div className='absolute -top-2 -right-3 w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px]'>
-                            <p className='text-xs'>0</p>
-                        </div>
-                    </div>
+                    {
+                        user?._id && (
+                            <div className='text-2xl cursor-pointer relative'>
+                                <span><FaShoppingCart /></span>
+                                <div className='absolute -top-2 -right-3 w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px]'>
+                                    <p className='text-xs'>{contex?.cartProductCount}</p>
+                                </div>
+                            </div>
+                        )
+                   }
 
                     {/* Login and Logout button */}
                     <div>

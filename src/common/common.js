@@ -60,6 +60,16 @@ const summaryApi = {
       url: `${backendDomain}/api/product-details`,
       method: "POST",
       description: "Get product details by id",
+   },
+   addToCartProduct: {
+      url: `${backendDomain}/api/add-to-cart`,
+      method: "POST",
+      description: "Add to cart by id",
+   },
+   countAddToCartProduct: {
+      url: `${backendDomain}/api/countAddToCart`,
+      method: "GET",
+      description: "Count add to cart by id",
    }
 };
 

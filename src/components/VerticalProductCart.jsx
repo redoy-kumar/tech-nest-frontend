@@ -3,6 +3,7 @@ import fetchCategoryByProduct from '../helpers/fetchCategoryWiseProduct';
 import displayBDCurrency from '../helpers/displayCurrency';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import addToCart from '../helpers/addToCart';
+import { Link } from 'react-router-dom';
 
 const VerticalProductCartCard = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -21,35 +22,35 @@ const VerticalProductCartCard = ({ category, heading }) => {
     fetchData();
   }, []);
 
- // Scroll Left
-    const nextSlide = () => {
-        const el = scrollRef.current;
-        if (!el) return;
+  // Scroll Left
+  const nextSlide = () => {
+    const el = scrollRef.current;
+    if (!el) return;
 
-        if (el.scrollLeft <= 0) {
-            el.scrollLeft = el.scrollWidth;
-        } else {
-            el.scrollLeft -= 300;
-        }
-    };
+    if (el.scrollLeft <= 0) {
+      el.scrollLeft = el.scrollWidth;
+    } else {
+      el.scrollLeft -= 300;
+    }
+  };
 
-    // Scroll Right
-    const prevSlide = () => {
-        const el = scrollRef.current;
-        if (!el) return;
+  // Scroll Right
+  const prevSlide = () => {
+    const el = scrollRef.current;
+    if (!el) return;
 
-        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
-            el.scrollLeft = 0;
-        } else {
-            el.scrollLeft += 300;
-        }
-    };
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
+      el.scrollLeft = 0;
+    } else {
+      el.scrollLeft += 300;
+    }
+  };
 
 
   return (
     <div className="container mx-auto px-3 my-8">
       <h2 className="text-2xl font-semibold py-2">{heading}</h2>
-        
+
       <div className="relative">
         {/* Arrow Buttons for md and up */}
         {data?.length > 1 && (
@@ -84,7 +85,8 @@ const VerticalProductCartCard = ({ category, heading }) => {
             ))
           ) : (
             data.map((product, index) => (
-              <div
+              <Link
+                 to={"product/" + product?._id}
                 key={index}
                 className="
                   w-52 md:w-64 lg:w-72 bg-white rounded-lg shadow flex flex-col overflow-hidden flex-shrink-0
@@ -122,12 +124,12 @@ const VerticalProductCartCard = ({ category, heading }) => {
 
                   <button
                     className="mt-2 cursor-pointer text-xs sm:text-sm md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full "
-                    onClick={(e)=>addToCart(e,product?._id)}
+                    onClick={(e) => addToCart(e, product?._id)}
                   >
                     Add to Cart
                   </button>
                 </div>
-              </div>
+              </Link>
             ))
           )}
         </div>

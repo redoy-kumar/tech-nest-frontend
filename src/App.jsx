@@ -3,17 +3,17 @@ import './App.css';
 import { ToastContainer } from 'react-toastify';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import summaryApi from './common/common';
 import Context from './context/context';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setUserDetails } from './store/userSlice';
 
 
 function App() {
   const hasFetched = useRef(false); // Prevent double fetch in Strict Mode
-
-  const dispatch =  useDispatch();
+  const [cartProductCount,setCartProductCount] = useState(0)
+  const dispatch = useDispatch();
 
   const fetchUserDetails = async () => {
     try {
@@ -29,7 +29,7 @@ function App() {
 
       const dataApi = await response.json();
 
-      if(dataApi.success){
+      if (dataApi.success) {
         dispatch(setUserDetails(dataApi.data))
       }
     } catch (error) {
@@ -37,15 +37,31 @@ function App() {
     }
   };
 
+
+  // for addToCart product count
+  const fetchUserAddToCart = async () => {
+    const response = await fetch(summaryApi.countAddToCartProduct.url, {
+      method: summaryApi.countAddToCartProduct.method,
+      credentials: 'include', 
+    });
+
+    const dataApi = await response.json();
+
+    setCartProductCount(dataApi?.data);
+  }
+
+
   useEffect(() => {
     if (!hasFetched.current) {
       fetchUserDetails();
       hasFetched.current = true;
     }
+
+    fetchUserAddToCart();
   }, []);
 
   return (
-    <Context.Provider value={{ fetchUserDetails }}>
+    <Context.Provider value={{ fetchUserDetails, cartProductCount, fetchUserAddToCart }}>
       <ToastContainer />
       <Header />
       <main className="min-h-[calc(100vh-125px)] pt-16">
