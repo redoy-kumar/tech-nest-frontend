@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import summaryApi from '../common/common'
-import { FaStar } from "react-icons/fa";
-import { FaStarHalf } from "react-icons/fa";
+import { FaStar, FaStarHalf } from "react-icons/fa";
 import displayBDCurrency from '../helpers/displayCurrency';
+import VerticalProductCard from '../components/VerticalProductCart';
+import VerticalProductCart from '../components/VerticalProductCart';
 
 const ProductDetails = () => {
+
   const [data, setData] = useState({
     productName: "",
     brandName: "",
@@ -14,59 +16,91 @@ const ProductDetails = () => {
     description: "",
     price: "",
     sellingPrice: ""
-  })
-  const params = useParams()
-  const [loading, setLoading] = useState(true)
-  const productImageListLoading = new Array(4).fill(null)
-  const [activeImage, setActiveImage] = useState("")
+  });
 
+  const params = useParams();
+  const [loading, setLoading] = useState(true);
+  const productImageListLoading = new Array(4).fill(null);
+  const [activeImage, setActiveImage] = useState("");
+
+  //  Show zoom only when hovering
+  const [showZoom, setShowZoom] = useState(false);
 
   const fetchProductDetails = async () => {
-  setLoading(true)
+    setLoading(true);
 
-  const response = await fetch(summaryApi.productDetails.url, {
-    method: summaryApi.productDetails.method,
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({
-      productId: params?.id
-    })
-  })
-  
-  const dataReponse = await response.json()
+    const response = await fetch(summaryApi.productDetails.url, {
+      method: summaryApi.productDetails.method,
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        productId: params?.id
+      })
+    });
 
-  // delay 1 second
-  setTimeout(() => {
-    setData(dataReponse?.data)
-    setActiveImage(dataReponse?.data?.productImage[0])
-    setLoading(false)
-  }, 1000)
-}
+    const dataReponse = await response.json();
 
+    setTimeout(() => {
+      setData(dataReponse?.data);
+      setActiveImage(dataReponse?.data?.productImage[0]);
+      setLoading(false);
+    }, 500);
+  };
 
   useEffect(() => {
-    fetchProductDetails()
-  }, [params])
+    fetchProductDetails();
+  }, [params]);
 
-  const handleMouseEnterProduct = (imageURL) => {
-    setActiveImage(imageURL)
-  }
 
+  /** ZOOM HANDLER ✅ FIXED */
+  const handleZoomImage = (e) => {
+    const zoomBox = document.getElementById("zoomBox");
+    if (!zoomBox || !e.target?.getBoundingClientRect) return;
+
+    const rect = e.target.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    zoomBox.style.backgroundPosition = `${x}% ${y}%`;
+  };
 
   return (
     <div className='container mx-auto p-4'>
 
       <div className='min-h-[200px] flex flex-col lg:flex-row gap-4'>
-        {/***product Image */}
+        {/* product Image */}
         <div className='h-96 flex flex-col lg:flex-row-reverse gap-4'>
 
-          <div className='h-[300px] w-[300px] lg:h-96 lg:w-96 bg-slate-200 relative p-2'>
-            <img src={activeImage} className='h-full w-full object-scale-down mix-blend-multiply' />
+          <div
+            className='h-[300px] w-[300px] lg:h-96 lg:w-96 bg-slate-200 relative p-2'
+            onMouseEnter={() => setShowZoom(true)}
+            onMouseLeave={() => setShowZoom(false)}
+            onMouseMove={handleZoomImage}
+          >
+            {/* Main image */}
+            <img
+              src={activeImage || null}
+              className="h-full w-full object-scale-down mix-blend-multiply"
+              alt="product"
+            />
 
-            {/* product zoom */}
-            
-
+            {/* Smooth Zoom visibility */}
+            <div
+              className={`hidden lg:block absolute min-w-[400px] min-h-[400px] bg-slate-200 p-1 -right-[410px] top-0 transition-opacity duration-200 ease-in-out 
+              ${showZoom ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            >
+              <div
+                id="zoomBox"
+                className='w-full h-full min-w-[400px] min-h-[400px] mix-blend-multiply'
+                style={{
+                  backgroundImage: `url(${activeImage})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "250%",
+                  backgroundPosition: "50% 50%",
+                }}
+              />
+            </div>
           </div>
 
           <div className='h-full'>
@@ -89,7 +123,12 @@ const ProductDetails = () => {
                     data?.productImage?.map((imgURL, index) => {
                       return (
                         <div className='h-20 w-20 bg-slate-200 rounded p-1' key={index}>
-                          <img src={imgURL} className='w-full h-full object-scale-down mix-blend-multiply cursor-pointer' onMouseEnter={() => handleMouseEnterProduct(imgURL)} onClick={() => handleMouseEnterProduct(imgURL)} />
+                          <img
+                            src={imgURL}
+                            className='w-full h-full object-scale-down mix-blend-multiply cursor-pointer'
+                            onMouseEnter={() => setActiveImage(imgURL)}
+                            onClick={() => setActiveImage(imgURL)}
+                          />
                         </div>
                       )
                     })
@@ -100,32 +139,13 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/***product details */}
+        {/* PRODUCT DETAILS */}
         {
           loading ? (
             <div className='grid gap-1 w-full'>
               <p className='bg-slate-200 animate-pulse  h-6 lg:h-8 w-full rounded-full inline-block'></p>
               <h2 className='text-2xl lg:text-4xl font-medium h-6 lg:h-8  bg-slate-200 animate-pulse w-full'></h2>
               <p className='capitalize text-slate-400 bg-slate-200 min-w-[100px] animate-pulse h-6 lg:h-8  w-full'></p>
-
-              <div className='text-orange-600 bg-slate-200 h-6 lg:h-8  animate-pulse flex items-center gap-1 w-full'>
-
-              </div>
-
-              <div className='flex items-center gap-2 text-2xl lg:text-3xl font-medium my-1 h-6 lg:h-8  animate-pulse w-full'>
-                <p className='text-orange-600 bg-slate-200 w-full'></p>
-                <p className='text-slate-400 line-through bg-slate-200 w-full'></p>
-              </div>
-
-              <div className='flex items-center gap-3 my-2 w-full'>
-                <button className='h-6 lg:h-8  bg-slate-200 rounded animate-pulse w-full'></button>
-                <button className='h-6 lg:h-8  bg-slate-200 rounded animate-pulse w-full'></button>
-              </div>
-
-              <div className='w-full'>
-                <p className='text-slate-600 font-medium my-1 h-6 lg:h-8   bg-slate-200 rounded animate-pulse w-full'></p>
-                <p className=' bg-slate-200 rounded animate-pulse h-10 lg:h-12  w-full'></p>
-              </div>
             </div>
           ) :
             (
@@ -159,13 +179,18 @@ const ProductDetails = () => {
               </div>
             )
         }
-
       </div>
 
-
+      {/* Recommended product */}
+      {data?.category && (
+        <VerticalProductCart
+          category={data.category}
+          heading={"Recommended Product"}
+        />
+      )}
 
     </div>
   )
 }
 
-export default ProductDetails
+export default ProductDetails;

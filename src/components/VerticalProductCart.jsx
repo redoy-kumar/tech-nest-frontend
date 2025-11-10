@@ -49,7 +49,7 @@ const VerticalProductCartCard = ({ category, heading }) => {
   return (
     <div className="container mx-auto px-3 my-8">
       <h2 className="text-2xl font-semibold py-2">{heading}</h2>
-
+        
       <div className="relative">
         {/* Arrow Buttons for md and up */}
         {data?.length > 1 && (

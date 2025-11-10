@@ -1,7 +1,7 @@
 import BannerProduct from "../components/BannerProduct";
 import CategoryList from "../components/CategoryList";
 import HorizontalProductCart from "../components/HorizontalProductCart";
-import VerticalProductCart from "../components/VerticalProductCard";
+import VerticalProductCart from "../components/VerticalProductCart";
 
 const Home = () => {
    
