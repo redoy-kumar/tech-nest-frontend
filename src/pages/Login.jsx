@@ -15,7 +15,7 @@ const Login = () => {
     });
 
     const navigate = useNavigate();
-    const { fetchUserDetails } = useContext(Context);
+    const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -49,7 +49,7 @@ const Login = () => {
             toast.success(dataApi.message);
             navigate('/');
             fetchUserDetails(); // Fetch user details after successful login
-
+            fetchUserAddToCart();
         } else {
             toast.error(dataApi.message);
         }

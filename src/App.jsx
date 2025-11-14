@@ -60,9 +60,10 @@ function App() {
     fetchUserAddToCart();
   }, []);
 
+
   return (
     <Context.Provider value={{ fetchUserDetails, cartProductCount, fetchUserAddToCart }}>
-      <ToastContainer />
+      <ToastContainer position='top-center'/>
       <Header />
       <main className="min-h-[calc(100vh-125px)] pt-16">
         <Outlet />

@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import fetchCategoryWiseProduct from '../helpers/fetchCategoryWiseProduct'
 import displayBDCurrency from '../helpers/displayCurrency'
 import { Link } from 'react-router-dom'
 import addToCart from '../helpers/addToCart'
+import Context from '../context/context'
 
 const CategroyWiseProductDisplay = ({ category, heading }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const loadingList = new Array(13).fill(null)
 
+    const { fetchUserAddToCart } = useContext(Context);
+
+    const handleAddToCart = async (e,id) => {
+      await addToCart(e,id)
+      await fetchUserAddToCart()
+    }
 
     const fetchData = async () => {
         setLoading(true)
@@ -63,7 +70,7 @@ const CategroyWiseProductDisplay = ({ category, heading }) => {
                                             <p className='text-orange-600 font-medium'>{displayBDCurrency(product?.sellingPrice)}</p>
                                             <p className='text-slate-500 line-through'>{displayBDCurrency(product?.price)}</p>
                                         </div>
-                                        <button className='text-sm bg-orange-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full'  onClick={(e) => addToCart(e, product?._id)}>Add to Cart</button>
+                                        <button className='text-sm bg-orange-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full'  onClick={(e) => handleAddToCart(e,product?._id)}>Add to Cart</button>
                                     </div>
                                 </Link>
                             )

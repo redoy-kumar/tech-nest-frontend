@@ -1,15 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import fetchCategoryByProduct from '../helpers/fetchCategoryWiseProduct';
 import displayBDCurrency from '../helpers/displayCurrency';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import addToCart from '../helpers/addToCart';
 import { Link } from 'react-router-dom';
+import Context from '../context/context';
 
 const VerticalProductCartCard = ({ category, heading }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const scrollRef = useRef(null);
+
+  const { fetchUserAddToCart } = useContext(Context);
+
+    const handleAddToCart = async (e,id) => {
+      await addToCart(e,id)
+      await fetchUserAddToCart()
+    }
 
   const fetchData = async () => {
     setLoading(true);
@@ -124,7 +132,7 @@ const VerticalProductCartCard = ({ category, heading }) => {
 
                   <button
                     className="mt-2 cursor-pointer text-xs sm:text-sm md:text-sm bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded-full "
-                    onClick={(e) => addToCart(e, product?._id)}
+                    onClick={(e) => handleAddToCart(e, product?._id)}
                   >
                     Add to Cart
                   </button>

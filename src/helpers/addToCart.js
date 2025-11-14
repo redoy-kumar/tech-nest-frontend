@@ -21,6 +21,9 @@ const addToCart = async(e,id) =>{
     }else{
         toast.error(responseData.message)
     }
+
+
+    return responseData
 }
 
 export default addToCart

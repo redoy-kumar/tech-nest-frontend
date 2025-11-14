@@ -18,7 +18,7 @@ const Header = () => {
     const [menuDisplay, setMenuDisplay] = useState(false);
     const dispatch = useDispatch();
 
-    const contex = useContext(Context)
+    const context = useContext(Context)
 
     const menuRef = useRef();
 
@@ -50,6 +50,7 @@ const Header = () => {
             toast.error(data.message);
         }
     };
+
 
     return (
         <header className='h-16 shadow-md fixed bg-white w-full z-40'>
@@ -116,12 +117,12 @@ const Header = () => {
                     {/* Shopping Cart */}
                     {
                         user?._id && (
-                            <div className='text-2xl cursor-pointer relative'>
+                            <Link to={"/cart-product"} className='text-2xl cursor-pointer relative'>
                                 <span><FaShoppingCart /></span>
                                 <div className='absolute -top-2 -right-3 w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[10px]'>
-                                    <p className='text-xs'>{contex?.cartProductCount}</p>
+                                    <p className='text-xs'>{context?.cartProductCount.count}</p>
                                 </div>
-                            </div>
+                            </Link>
                         )
                    }
 

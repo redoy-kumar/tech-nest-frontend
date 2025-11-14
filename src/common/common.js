@@ -70,6 +70,21 @@ const summaryApi = {
       url: `${backendDomain}/api/countAddToCart`,
       method: "GET",
       description: "Count add to cart by id",
+   },
+   viewAddToCartProduct: {
+      url: `${backendDomain}/api/view-cart-product`,
+      method: "GET",
+      description: "View all add to cart product according to user id",
+   },
+   updateAddToCartProduct: {
+      url: `${backendDomain}/api/update-cart-product`,
+      method: "POST",
+      description: "Update add to cart product according to user id",
+   },
+   deleteAddToCartProduct: {
+      url: `${backendDomain}/api/delete-cart-product`,
+      method: "POST",
+      description: "Update add to cart product according to user id",
    }
 };
 
