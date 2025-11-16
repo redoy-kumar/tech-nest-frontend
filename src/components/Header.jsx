@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { LuSearch } from "react-icons/lu";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import summaryApi from '../common/common';
 import { toast } from 'react-toastify';
@@ -14,13 +14,13 @@ import Context from '../context/context';
 
 const Header = () => {
     const user = useSelector(state => state?.user?.user);
-
     const [menuDisplay, setMenuDisplay] = useState(false);
     const dispatch = useDispatch();
-
     const context = useContext(Context)
-
+    const navigate = useNavigate()
     const menuRef = useRef();
+    const searchInput = useLocation()
+    const [search,setSearch] = useState(searchInput?.search?.split("=")[1])
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -51,6 +51,16 @@ const Header = () => {
         }
     };
 
+    const handleSearch = (e) => {
+        const { value } = e.target;
+        setSearch(value)
+
+        if(value){
+            navigate(`/search-product?q=${value}`);
+        }else{
+            navigate(`/search-product`);
+        }
+    }
 
     return (
         <header className='h-16 shadow-md fixed bg-white w-full z-40'>
@@ -73,6 +83,8 @@ const Header = () => {
                         type="text"
                         placeholder="Search product here..."
                         className="border w-full outline-none focus-within:shadow-md border-gray-300 rounded-l-full px-4 py-2"
+                        onChange={handleSearch} 
+                        value={search}
                     />
                     <div className='text-lg min-w-[50px] py-3 cursor-pointer flex items-center justify-center bg-orange-500 text-white rounded-r-full'>
                         <LuSearch />

@@ -85,6 +85,11 @@ const summaryApi = {
       url: `${backendDomain}/api/delete-cart-product`,
       method: "POST",
       description: "Update add to cart product according to user id",
+   },
+   searchProduct: {
+      url: `${backendDomain}/api/search-product`,
+      method: "GET",
+      description: "Search product",
    }
 };
 
