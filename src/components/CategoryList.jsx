@@ -37,7 +37,7 @@ const CategoryList = () => {
                     <div className='flex items-center gap-5 justify-center overflow-x-auto scrollbar-none py-2'>
                         {categoryProduct.map((product, index) => (
                             <Link
-                                to={"/product-category/" + product?.category}
+                                to={"/product-category?category=" + product?.category}
                                 key={index}
                                 className='p-2 cursor-pointer transform transition duration-300 hover:scale-105 flex flex-col items-center'
                             >

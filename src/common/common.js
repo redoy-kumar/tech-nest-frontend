@@ -90,6 +90,11 @@ const summaryApi = {
       url: `${backendDomain}/api/search-product`,
       method: "GET",
       description: "Search product",
+   },
+   filterProduct: {
+      url: `${backendDomain}/api/filter-product`,
+      method: "POST",
+      description: "Filter products by category",
    }
 };
 

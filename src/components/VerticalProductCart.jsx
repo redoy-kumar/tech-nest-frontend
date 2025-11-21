@@ -6,7 +6,7 @@ import addToCart from '../helpers/addToCart';
 import { Link } from 'react-router-dom';
 import Context from '../context/context';
 
-const VerticalProductCartCard = ({ category, heading }) => {
+const VerticalProductCart = ({ category, heading }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -146,4 +146,4 @@ const VerticalProductCartCard = ({ category, heading }) => {
   );
 };
 
-export default VerticalProductCartCard;
+export default VerticalProductCart;
