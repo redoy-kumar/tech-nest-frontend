@@ -22,6 +22,7 @@ const Header = () => {
     const searchInput = useLocation()
     const [search,setSearch] = useState(searchInput?.search?.split("=")[1])
 
+    
     // Close menu when clicking outside
     useEffect(() => {
         const handler = (e) => {
@@ -44,6 +45,7 @@ const Header = () => {
         if (data.success) {
             toast.success(data.message);
             dispatch(setUserDetails(null));
+            navigate('/');
         }
 
         if (data.error) {

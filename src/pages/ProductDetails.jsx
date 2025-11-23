@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import summaryApi from '../common/common'
 import { FaStar, FaStarHalf } from "react-icons/fa";
 import displayBDCurrency from '../helpers/displayCurrency';
 import CategoryWiseProductDisplay from '../components/CategoryWiseProductDisplay';
+import addToCart from '../helpers/addToCart';
+import Context from '../context/context';
 
 const ProductDetails = () => {
 
@@ -21,6 +23,8 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const productImageListLoading = new Array(4).fill(null);
   const [activeImage, setActiveImage] = useState("");
+  const {fetchUserAddToCart} = useContext(Context);
+  const navigate = useNavigate();
 
   //  Show zoom only when hovering
   const [showZoom, setShowZoom] = useState(false);
@@ -52,7 +56,7 @@ const ProductDetails = () => {
   }, [params]);
 
 
-  /** ZOOM HANDLER ✅ FIXED */
+  /** ZOOM HANDLER FIXED */
   const handleZoomImage = (e) => {
     const zoomBox = document.getElementById("zoomBox");
     if (!zoomBox || !e.target?.getBoundingClientRect) return;
@@ -63,6 +67,19 @@ const ProductDetails = () => {
 
     zoomBox.style.backgroundPosition = `${x}% ${y}%`;
   };
+
+// ADD TO CART HANDLER
+  const handleAddToCart = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart();
+  }
+
+  // handle buy now
+  const handleBuyNow = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart();
+    navigate('/cart-product');
+  }
 
   return (
     <div className='container mx-auto p-4'>
@@ -167,8 +184,8 @@ const ProductDetails = () => {
                 </div>
 
                 <div className='flex items-center gap-3 my-2'>
-                  <button className='border-2 cursor-pointer border-orange-600 rounded px-3 py-1 min-w-[120px] text-orange-600 font-medium hover:bg-orange-600 hover:text-white'>Buy</button>
-                  <button className='border-2 cursor-pointer border-orange-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-orange-600 hover:text-orange-600 hover:bg-white'>Add To Cart</button>
+                  <button className='border-2 cursor-pointer border-orange-600 rounded px-3 py-1 min-w-[120px] text-orange-600 font-medium hover:bg-orange-600 hover:text-white' onClick={(e)=>handleBuyNow(e,data?._id)} >Buy</button>
+                  <button className='border-2 cursor-pointer border-orange-600 rounded px-3 py-1 min-w-[120px] font-medium text-white bg-orange-600 hover:text-orange-600 hover:bg-white' onClick={(e)=>handleAddToCart(e,data?._id)}>Add To Cart</button>
                 </div>
 
                 <div>

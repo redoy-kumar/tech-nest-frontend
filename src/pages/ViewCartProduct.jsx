@@ -13,7 +13,7 @@ const ViewCartProduct = () => {
 
 
     const fetchData = async () => {
-        setLoading(true)
+        // setLoading(true)
         const response = await fetch(summaryApi.viewAddToCartProduct.url, {
             method: summaryApi.viewAddToCartProduct.method,
             credentials: 'include',
@@ -21,7 +21,7 @@ const ViewCartProduct = () => {
                 "content-type": 'application/json'
             },
         })
-        setLoading(false)
+        // setLoading(false)
 
         const responseData = await response.json()
 
@@ -29,9 +29,15 @@ const ViewCartProduct = () => {
             setData(responseData.data)
         }
     }
+    const handleLoading = async () => {
+        await fetchData();
+    }
+
 
     useEffect(() => {
-        fetchData();
+        setLoading(true);
+        handleLoading();
+        setLoading(false);
     }, [])
 
     // Increase product quantity function
